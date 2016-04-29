@@ -1,0 +1,35 @@
+
+// node_add takes label, host, HTTPS port - proto port comes at link time - autogen
+
+
+// Nodes == all participating network endpoints
+
+// node.node_add(1, 'rm1', "LM-SJN-00710074", 8000);
+// node.node_add(2, 'rm2', "LM-SJN-00710074", 9000);
+// node.node_add(3, 'rm3', "LM-SJN-00710074", 10000);
+// node.node_add(4, 'rm4', "LM-SJN-00710074", 8005);
+// node.node_add(5, 'rm5', "LM-SJN-00710074", 9005);
+// node.node_add(6, 'rm6', "LM-SJN-00710074", 10005);
+// node.node_add(7, 'rm7', "LM-SJN-00710074", 8010);
+// node.node_add(8, 'rm8', "LM-SJN-00710074", 9010);
+// node.node_add(9, 'rm9', "LM-SJN-00710074", 10010);
+node.node_add(1, 'rm1', "localhost", 8000);
+node.node_add(2, 'rm2', "localhost", 9000);
+node.node_add(3, 'rm3', "localhost", 10000);
+node.node_add(4, 'rm4', "localhost", 8005);
+node.node_add(5, 'rm5', "localhost", 9005);
+node.node_add(6, 'rm6', "localhost", 10005);
+node.node_add(7, 'rm7', "localhost", 8010);
+node.node_add(8, 'rm8', "localhost", 9010);
+node.node_add(9, 'rm9', "localhost", 10010);
+
+// link config tells endpoints to listen/connect
+// Link uses ports from 30,000 -> 31,998 
+
+link.mesh_link('rm1', 'rm2', 'rm3', 'rm4', 'rm5', 'rm6', 'rm7', 'rm8', 'rm9', 2048 * 200 ); 
+
+// application -- rmbot-cache is first
+
+set_instance("rm1")
+
+create_app("rmbot-cache").add_pool('a', ['rm1','rm2','rm3']).add_pool('b', ['rm4', 'rm5','rm6']).add_pool('c', ['rm[789]']).make_primary('a').set_hash_buckets(101);
